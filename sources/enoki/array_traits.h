@@ -114,9 +114,9 @@ namespace detail {
     struct is_same {
         static constexpr bool value =
             sizeof(T0) == sizeof(T1) &&
-            std::is_floating_point_v<T0> == std::is_floating_point_v<T1> &&
-            std::is_signed_v<T0> == std::is_signed_v<T1> &&
-            std::is_arithmetic_v<T0> == std::is_arithmetic_v<T1>;
+            enoki::is_enoki_floating_point_v<T0> == enoki::is_enoki_floating_point_v<T1> &&
+            enoki::is_enoki_signed_v<T0> == enoki::is_enoki_signed_v<T1> &&
+            enoki::is_enoki_arithmetic_v<T0> == enoki::is_enoki_arithmetic_v<T1>;
     };
 
     template <typename T0, typename T1>
@@ -529,22 +529,22 @@ template <typename T, typename = int> struct enoki_type {
 
 template <typename T> struct enoki_type<T, enable_if_t<is_int8_v<T>>> {
     static constexpr EnokiType value =
-        std::is_signed_v<T> ? EnokiType::Int8 : EnokiType::UInt8;
+        enoki::is_enoki_signed_v<T> ? EnokiType::Int8 : EnokiType::UInt8;
 };
 
 template <typename T> struct enoki_type<T, enable_if_t<is_int16_v<T>>> {
     static constexpr EnokiType value =
-        std::is_signed_v<T> ? EnokiType::Int16 : EnokiType::UInt16;
+        enoki::is_enoki_signed_v<T> ? EnokiType::Int16 : EnokiType::UInt16;
 };
 
 template <typename T> struct enoki_type<T, enable_if_t<is_int32_v<T>>> {
     static constexpr EnokiType value =
-        std::is_signed_v<T> ? EnokiType::Int32 : EnokiType::UInt32;
+        enoki::is_enoki_signed_v<T> ? EnokiType::Int32 : EnokiType::UInt32;
 };
 
 template <typename T> struct enoki_type<T, enable_if_t<is_int64_v<T>>> {
     static constexpr EnokiType value =
-        std::is_signed_v<T> ? EnokiType::Int64 : EnokiType::UInt64;
+        enoki::is_enoki_signed_v<T> ? EnokiType::Int64 : EnokiType::UInt64;
 };
 
 template <typename T> struct enoki_type<T, enable_if_t<std::is_enum_v<T>>> {

@@ -19,12 +19,6 @@ NAMESPACE_BEGIN(enoki)
 struct half;
 NAMESPACE_END(enoki)
 
-NAMESPACE_BEGIN(std)
-template<> struct is_floating_point<enoki::half> : true_type { };
-template<> struct is_arithmetic<enoki::half> : true_type { };
-template<> struct is_signed<enoki::half> : true_type { };
-NAMESPACE_END(std)
-
 NAMESPACE_BEGIN(enoki)
 struct half {
     uint16_t value;
@@ -35,7 +29,7 @@ struct half {
     #endif
     { }
 
-    #define ENOKI_IF_SCALAR template <typename Value, enable_if_t<std::is_arithmetic_v<Value>> = 0>
+    #define ENOKI_IF_SCALAR template <typename Value, enable_if_t<enoki::is_enoki_arithmetic_v<Value>> = 0>
 
     ENOKI_IF_SCALAR half(Value val) : value(float32_to_float16(float(val))) { }
 

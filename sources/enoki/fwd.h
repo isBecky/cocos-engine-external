@@ -228,7 +228,7 @@
 #endif
 
 #define ENOKI_CHKSCALAR(reason)                                                \
-    if (std::is_arithmetic_v<std::decay_t<Value>>) {                           \
+    if (enoki::is_enoki_arithmetic_v<std::decay_t<Value>>) {                   \
         ENOKI_TRACK_SCALAR(reason)                                             \
     }
 
@@ -307,6 +307,23 @@ extern ENOKI_IMPORT void cuda_host_free(void *);
 
 /// Half-precision floating point value
 struct half;
+
+/// Custom type traits to replace illegal std:: specializations.
+/// C++ standard prohibits user specialization of std::is_floating_point,
+/// std::is_arithmetic, std::is_signed. These traits extend the std:: versions
+/// to also recognize enoki::half.
+template<typename T> struct is_enoki_floating_point : std::is_floating_point<T> { };
+template<> struct is_enoki_floating_point<half> : std::true_type { };
+
+template<typename T> struct is_enoki_arithmetic : std::is_arithmetic<T> { };
+template<> struct is_enoki_arithmetic<half> : std::true_type { };
+
+template<typename T> struct is_enoki_signed : std::is_signed<T> { };
+template<> struct is_enoki_signed<half> : std::true_type { };
+
+template<typename T> inline constexpr bool is_enoki_floating_point_v = is_enoki_floating_point<T>::value;
+template<typename T> inline constexpr bool is_enoki_arithmetic_v = is_enoki_arithmetic<T>::value;
+template<typename T> inline constexpr bool is_enoki_signed_v = is_enoki_signed<T>::value;
 
 template <typename T> struct MaskBit;
 
