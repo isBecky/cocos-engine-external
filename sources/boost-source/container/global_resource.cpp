@@ -68,18 +68,20 @@ struct null_memory_resource_imp
    {  return &other == this;   }
 };
 
+static new_delete_resource_imp g_new_delete_resource_instance;
+static null_memory_resource_imp g_null_memory_resource_instance;
+
 BOOST_CONTAINER_DECL memory_resource* new_delete_resource() BOOST_NOEXCEPT
 {
-   return &boost::container::dtl::singleton_default<new_delete_resource_imp>::instance();
+   return &g_new_delete_resource_instance;
 }
 
 BOOST_CONTAINER_DECL memory_resource* null_memory_resource() BOOST_NOEXCEPT
 {
-   return &boost::container::dtl::singleton_default<null_memory_resource_imp>::instance();
+   return &g_null_memory_resource_instance;
 }
 
-static memory_resource *default_memory_resource =
-   &boost::container::dtl::singleton_default<new_delete_resource_imp>::instance();
+static memory_resource *default_memory_resource = &g_new_delete_resource_instance;
 
 BOOST_CONTAINER_DECL memory_resource* set_default_resource(memory_resource* r) BOOST_NOEXCEPT
 {
